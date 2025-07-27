@@ -91,12 +91,13 @@ int32_t main(int32_t argc, char **argv)
     }
 
     int32_t counter = 0;
-    for (int32_t i = 0; i < table->size; ++i)
+    for (int32_t i = 0; i < size; ++i)
     {
-        hash_table_item_t *item = table->items[i];
-        if (item != NULL && item->key != NULL)
+        pair_t pair = key_value_pairs[i];
+        char *value = hash_table_search(table, pair.key);
+        if (value != NULL)
         {
-            printf("%d pair: %s | %s\n", counter++, item->key, item->value);
+            printf("%d pair: %s | %s\n", counter++, pair.key, value);
         }
     }
 
