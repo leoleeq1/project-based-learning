@@ -1,1 +1,9 @@
 [Bb]uild/
+
+.vscode/
+
+*.ilk
+*.exe
+*.pdb
+*.so
+*.o
