@@ -1,6 +1,13 @@
 [Bb]uild/
 
+obj/
+bin/
+
+.vs/
 .vscode/
+
+.zig-cache/
+zig-out/
 
 *.ilk
 *.exe
