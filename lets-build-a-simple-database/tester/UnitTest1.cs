@@ -1,14 +1,19 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace tester;
 
 public class DBTester
 {
-    private static Process? RunProcess()
+    private static readonly string executablePath = "d:/gitproject/project-based-learning/build/main.exe";
+
+    private static Process? RunProcess([CallerMemberName] string filename = "")
     {
         return Process.Start(new ProcessStartInfo
         {
-            FileName = Path.GetFullPath("d:/gitproject/project-based-learning/build/main.exe"),
+            FileName = Path.GetFullPath(executablePath),
+            Arguments = $"{filename}.db",
+            WorkingDirectory = Path.GetDirectoryName(executablePath),
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
         });
@@ -138,5 +143,38 @@ public class DBTester
             "db > Executed.",
             "db > ",
         ]);
+    }
+
+    [Fact]
+    public void KeepsDataAfterClosingConnection()
+    {
+        using (var process = RunProcess())
+        {
+            Assert.NotNull(process);
+            WriteLines(process.StandardInput, [
+                "insert 1 user1 person1@example.com",
+                ".exit",
+            ]);
+
+            ReadLines(process.StandardOutput, [
+                "db > Executed.",
+                "db > ",
+            ]);
+        }
+
+        using (var process = RunProcess())
+        {
+            Assert.NotNull(process);
+            WriteLines(process.StandardInput, [
+                "select",
+                ".exit",
+            ]);
+
+            ReadLines(process.StandardOutput, [
+                "db > (1, user1, person1@example.com)",
+                "Executed.",
+                "db > ",
+            ]);
+        }
     }
 }
