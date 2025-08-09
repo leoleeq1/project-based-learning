@@ -1,7 +1,6 @@
 [Bb]uild/
-
-obj/
-bin/
+[Oo]bj/
+[Bb]in/
 
 .vs/
 .vscode/
@@ -9,8 +8,11 @@ bin/
 .zig-cache/
 zig-out/
 
+TestResults/
+
 *.ilk
 *.exe
 *.pdb
 *.so
 *.o
+*.db
